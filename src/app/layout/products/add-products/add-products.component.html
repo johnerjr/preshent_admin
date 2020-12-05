@@ -1,0 +1,993 @@
+<ngx-ui-loader></ngx-ui-loader>
+<div [@routerTransition] class="marginTop">
+    <!-- <p>Create New products</p> -->
+
+    <div>
+        <div>
+            <form [formGroup]="productsForm" novalidate (ngSubmit)="onProductsSubmit()">
+                <div class="row">
+                    <div class="col col-sm-12">
+                        <div class="card mb-12">
+                            <div class="card-header">
+                                <div style="float: left;">
+                                    <strong> Add New products </strong>
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" style="margin-right: 5px;" class="btn btn-primary"
+                                        label="CREATE">
+                                        Save Product
+                                    </button>
+                                    <button type="button" class="btn btn-light prodOvercolor"
+                                        (click)="cancelProductSubmit()" label="CREATE" style="border: 1px solid gray;">
+                                        cancel
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col col-sm-8">
+                                        <div class="form-group">
+                                            <input placeholder="Name" type="text" size="30"
+                                                formControlName="name" class="form-control" />
+                                            <div *ngFor="
+                                                        let validation of account_validation_messages.name
+                                                    ">
+                                                <span class="help-block text-danger" *ngIf="
+                                                            productsForm
+                                                                .get('name')
+                                                                .hasError(
+                                                                    validation.type
+                                                                ) &&
+                                                            (productsForm.get('name')
+                                                                .dirty ||
+                                                                productsForm.get('name')
+                                                                    .touched)
+                                                        ">{{ validation.message }}
+                                                </span>
+                                            </div>
+
+                                            <div *ngIf="productsForm.controls['name'].hasError('pattern')" class="help-block  text-danger">Please enter a valid Name!</div>
+                                            <div *ngIf="productsForm.controls['name'].hasError('maxlength')" class="help-block  text-danger">Please enter a valid Length for Name!</div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-8">
+                                        <div class="row">
+                                            <div class="col col-8" *ngIf="s3Img && s3Img.length>0">
+                                                
+                                                <!-- <div class="card imgCard" style="margin-bottom: 20px;" *ngFor="let img of s3Img">
+                                                    <div class="card-body cursor">
+                                                        <span class="pull-right clickable close-icon cursor" style="
+                                                                float: right;
+                                                                color: red;
+                                                            " data-effect="fadeOut" (click)="
+                                                                removeImage()
+                                                            "><i class="fa fa-times"></i></span>
+                                                        <div class="form-group">
+                                                            <img src="{{
+                                                                    img.image
+                                                                }}" width="55%" />
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+
+                                                <div class="row">
+                                                        <div class="col-5" *ngFor="
+                                                                let img of s3Img;
+                                                                let i = index">
+                                                            <div class="card" style="margin-bottom: 20px;">
+                                                                <div class="card-body">
+                                                                    <span class="pull-right clickable close-icon cursor"
+                                                                        style="float: right;color: red;"
+                                                                        data-effect="fadeOut" (click)="removeImage(img,i)">
+                                                                        <i class="fa fa-times"></i></span>
+                                                                        <div class="form-group">
+                                                                            <img src="{{
+                                                                                    img.image
+                                                                                }}" width="55%" />
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                            </div>
+
+                                            <div class="col col-4">
+                                                <div class="row">
+                                                        <div class="col-10">
+                                                            <div class="card imgCard" style="margin-bottom: 20px;">
+                                                                <div class="card-body cursor">
+                                                                    <div class="form-group">
+                                                                        <!-- <input type="file"
+                                                                            (change)="fileChangeEvent($event); open(content)" /> open(content) -->
+            
+                                                                        <input #fileInput type="file" name="imageUpload" (change)="
+                                                                                fileChangeEvent(
+                                                                                    $event, content
+                                                                                );
+                                                                            " id="imageUpload" class="hide" />
+                                                                        <label for="imageUpload"
+                                                                            class="btn btn-primary btn-circle btn-xl imgLabel"><i
+                                                                                class="fa fa-fw fa-plus"></i></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-8">
+                                        <div class="form-group"
+                                            [ngClass]="{'has-error':productsForm.get('description').invalid && (productsForm.get('description').dirty || productsForm.get('description').touched)}">
+                                            <input placeholder="Description" type="text" size="30"
+                                                formControlName="description" class="form-control" />
+                                            <div *ngFor="
+                                                        let validation of account_validation_messages.description
+                                                    ">
+                                                <span class="help-block text-danger" *ngIf="
+                                                            productsForm
+                                                                .get('description')
+                                                                .hasError(
+                                                                    validation.type
+                                                                ) &&
+                                                            (productsForm.get(
+                                                                'description'
+                                                            ).dirty ||
+                                                                productsForm.get(
+                                                                    'description'
+                                                                ).touched)
+                                                        ">{{ validation.message }}
+                                                </span>
+                                            </div>
+
+                                            <div *ngIf="productsForm.controls['description'].hasError('pattern')" class="help-block  text-danger">Please enter a valid Description!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add OFFERS -->
+                                    <div class="col col-12">
+                                        <hr />
+                                        <div class="form-group">
+                                            Offers
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-12">
+                                        <div class="row">
+                                            <div class="col-8" *ngIf="final_offer">
+                                                    <div class="row">
+                                                        <div class="col-4" *ngFor="
+                                                                let offer of final_offer;
+                                                                let i = index
+                                                            ">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <span class="pull-right clickable close-icon cursor"
+                                                                        style="float: right;color: red;"
+                                                                        data-effect="fadeOut" (click)="removeOffer(offer,i)">
+                                                                        <i class="fa fa-times"></i></span>
+                                                                    <span class="card-title">{{
+                                                                            offer.seller_name
+                                                                        }}</span>
+                                                                    <div class="card-text">
+                                                                        ${{
+                                                                            offer.product_price
+                                                                        }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="col-4">
+                                                <div class="card">
+                                                    <div class="card-body cursor offerCard">
+                                                        <div class="card-title preColor" (click)="
+                                                                openOfferModel(
+                                                                    offerModel
+                                                                )
+                                                            ">
+                                                            <i class="fa fa-fw fa-plus"></i>
+                                                            Add Offer
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                    </div>
+
+                                    <!-- Product parameters -->
+                                    <div class="col col-sm-12">
+                                        <div class="form-group">
+                                            Product Parameters
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-sm-12">
+                                        <!-- <form [formGroup]="productParameterForm" novalidate> -->
+                                        <div class="row">
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Lumen (lm)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Lumen(lm)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="lumen" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.lumen
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'lumen'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'lumen'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'lumen'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Watt(w)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Watt(w)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="watt" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.watt
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get('watt')
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'watt'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'watt'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Kilowatt-hour(kWh)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Kilowatt-hour(kWh)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="kilowatt_hour" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.kilowatt_hour
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'kilowatt_hour'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'kilowatt_hour'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'kilowatt_hour'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Gigahertz(GHz)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Gigahertz(GHz)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="gigahertz" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.gigahertz
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'gigahertz'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'gigahertz'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'gigahertz'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Liter(l)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Liter(l)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="liter" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.liter
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'liter'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'liter'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'liter'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Gallon</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Gallon" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="gallon" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.gallon
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'gallon'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'gallon'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'gallon'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Volt(V)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Volt(V)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="volt" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.volt
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get('volt')
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'volt'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'volt'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Ampere(A)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Ampere(A)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="ampere" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.ampere
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'ampere'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'ampere'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'ampere'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Ampere-hour(Ah)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Ampere-hour(Ah)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="ampere_hour" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.ampere_hour
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'ampere_hour'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'ampere_hour'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'ampere_hour'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Gallons per
+                                                    minute(GPM)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Gallons per minute(GPM)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="gallons_per_minute" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.gallons_per_minute
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'gallons_per_minute'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'gallons_per_minute'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'gallons_per_minute'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">
+                                                    British thermal
+                                                    unit(BTU)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder=" British thermal unit(BTU)" appTwoDigitDecimaNumber type="text"
+                                                        size="30" formControlName="british_thermal_unit"
+                                                        class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.british_thermal_unit
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'british_thermal_unit'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'british_thermal_unit'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'british_thermal_unit'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">
+                                                    R-Value</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="R-Value" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="r_value" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.r_value
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'r_value'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'r_value'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'r_value'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Width(in)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Width(in)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="width" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.width
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'width'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'width'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'width'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Height(in)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Height(in)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="height" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.height
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'height'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'height'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'height'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col col-sm-2">
+                                                <label class="form-group">Depth(in)</label>
+                                            </div>
+                                            <div class="col col-sm-4">
+                                                <div class="form-group">
+                                                    <input placeholder="Depth(in)" appTwoDigitDecimaNumber type="text" size="30"
+                                                        formControlName="depth" class="form-control" />
+                                                    <p *ngFor="
+                                                            let validation of account_validation_messages.depth
+                                                        ">
+                                                        <span class="help-block text-danger" *ngIf="
+                                                                productsForm
+                                                                    .get(
+                                                                        'depth'
+                                                                    )
+                                                                    .hasError(
+                                                                        validation.type
+                                                                    ) &&
+                                                                (productsForm.get(
+                                                                    'depth'
+                                                                ).dirty ||
+                                                                    productsForm.get(
+                                                                        'depth'
+                                                                    ).touched)
+                                                            ">{{
+                                                                validation.message
+                                                            }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- </form> -->
+
+                                        <hr />
+                                    </div>
+
+                                    <!-- Product Categories -->
+                                    <div class="col col-sm-12">
+                                        <div class="row">
+                                            <div class="col col-sm-12">
+                                                <div class="card mb-12">
+                                                    <div class="card-header">
+                                                        <div class="row">
+                                                                <div class="col-5 text-xs-center">
+                                                                        Select Category
+                                                                </div>
+                                                                <div class="col-7 text-xs-center">
+                                                                   
+                                                                        <input type="text" #myInput size="50"
+                                                                        formControlName="catFilter" [(ngModel)]="catFilter"
+                                                                        placeholder="Search" (input)="
+                                                                            categoryFilterItem(
+                                                                                myInput.value
+                                                                            )
+                                                                        " style="width: inherit;"/>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+
+
+                                                    <!-- added by Nayan -->
+                                                    <div class="card-body search-results" *ngIf="cats?.length > 0" 
+                                                        infiniteScroll [infiniteScrollDistance]="2" 
+                                                        [infiniteScrollThrottle]="50" [scrollWindow]="false">
+                                                        <div *ngFor="let category of cats; let i = index;">
+                                                            <div id="prodCat" class="row">
+                                                                <div class="col-12 text-xs-center">
+                                                                    <div class="card mb-2 cursor prodCategory">
+                                                                        <div class="card-body">
+                                                                            <div class="row prodEditCategory">
+
+                                                                                <div class="col-1 text-xs-center">
+                                                                                    <input type="checkbox"
+                                                                                        [value]="category.id"
+                                                                                        id="c{{category.id}}"
+                                                                                        (change)="checkboxClick('category', category.id)"
+                                                                                        [checked]="category.catCheck === true ? true : false" />
+                                                                                </div>
+                                                                                <div class="col-8 text-xs-center">
+                                                                                    {{ category?.name | titlecase }}
+                                                                                </div>
+                                                                                <div class="col-3 text-xs-center">
+                                                                                    <span style="color: black;">
+                                                                                        {{category?.TotalProduct || 0}}
+                                                                                        &nbsp;Products
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- // FOR SUB-CATEGORIES // -->
+                                                                    <div
+                                                                        *ngFor="let subCategory of subCats; let j= index;">
+                                                                        <div
+                                                                            *ngIf="subCategory.categoriesID == category.id">
+                                                                            <div class="row"
+                                                                                class="subcats{{category.id}}"
+                                                                                style="display: none;">
+                                                                                <div class="col-1 text-xs-center">
+                                                                                </div>
+                                                                                <div class="col-11 text-xs-center">
+                                                                                    <div class="card mb-3 cursor">
+                                                                                        <div
+                                                                                            class="card-body prodCategory">
+                                                                                            <div
+                                                                                                class="row prodEditCategory">
+                                                                                                <div
+                                                                                                    class="col-1 text-xs-center">
+                                                                                                    <input
+                                                                                                        type="checkbox"
+                                                                                                        [value]="subCategory.id"
+                                                                                                        id="s{{subCategory.id}}"
+                                                                                                        class="s{{category.id}}"
+                                                                                                        (change)="checkboxClick('subCategory', subCategory.id)"
+                                                                                                        [checked]="subCategory.subCatCheck === true ? true : false" />
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="col-8 text-xs-center">
+                                                                                                    {{ subCategory?.name | titlecase }}
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="col-3 text-xs-center">
+                                                                                                    {{subCategory?.TotalProduct || 0}}
+                                                                                                    &nbsp;Products
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- // FOR MINOR-CATEGORIES // -->
+                                                                                    <div
+                                                                                        *ngFor="let minorCategory of minorCats; let k = index;">
+                                                                                        <div
+                                                                                            *ngIf="minorCategory.subCategoriesID == subCategory.id">
+                                                                                            <div class="row">
+                                                                                                <div
+                                                                                                    class="col-1 text-xs-center">
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="col-11 text-xs-center">
+                                                                                                    <div
+                                                                                                        class="card mb-3 prodCategory">
+                                                                                                        <div
+                                                                                                            class="card-body prodCategory">
+                                                                                                            <div
+                                                                                                                class="row prodEditCategory">
+                                                                                                                <div
+                                                                                                                    class="col-1 text-xs-center">
+                                                                                                                    <input
+                                                                                                                        type="checkbox"
+                                                                                                                        [value]="minorCategory.id"
+                                                                                                                        id="m{{minorCategory.id}}"
+                                                                                                                        class="m{{subCategory.id}} mc{{category.id}}"
+                                                                                                                        (change)="checkboxClick('minorCategory', minorCategory.id)"
+                                                                                                                        [checked]="minorCategory.minorCatCheck === true ? true : false" />
+                                                                                                                </div>
+                                                                                                                <div
+                                                                                                                    class="col-8 text-xs-center">
+                                                                                                                    {{ minorCategory?.name | titlecase }}
+                                                                                                                </div>
+                                                                                                                <div
+                                                                                                                    class="col-3 text-xs-center edit">
+                                                                                                                    {{subCategory?.TotalProduct || 0}} Products
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- eof added by Nayan -->
+
+
+                                                    <!-- <div class="card-body" *ngIf="
+                                                            cats?.length >
+                                                            0
+                                                        ">
+                                                        <p-paginator [rows]="10" [totalRecords]="
+                                                                totalLength
+                                                            " [rowsPerPageOptions]="[
+                                                                5,
+                                                                10,
+                                                                20,
+                                                                30,
+                                                                40
+                                                            ]" (onPageChange)="
+                                                                paginate($event)
+                                                            "></p-paginator>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="card-body" *ngIf="categories?.length > 0">
+                                    <p-paginator [rows]="10" [totalRecords]="totalLength" [rowsPerPageOptions]="[5,10,20,30,40]"
+                                    (onPageChange)="paginate($event)">
+                                </p-paginator>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Model for Images -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add image</h4>
+    </div>
+    <div class="modal-body">
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 3"
+            format="{{ fileType }}" (imageCropped)="imageCropped($event)">
+        </image-cropper>
+    </div>
+    <div class="modal-footer">
+        <div class="progress my-4">
+            <!-- <p-progressBar [value]="percentage"></p-progressBar> -->
+        </div>
+        <button type="button" class="btn btn-light preColor" (click)="modal.dismiss('Cross click'); cancelImage(); ">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-light preColor" (click)="saveImage(croppedImage)">
+            Save
+        </button>
+    </div>
+</ng-template>
+<!-- Model for Images -->
+
+<!-- Model for OFFER -->
+<ng-template #offerModel let-modal>
+    <form [formGroup]="offerForm" novalidate>
+        <!-- (ngSubmit)="onOfferSubmit()" -->
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add Offer</h4>
+            <hr />
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col col-sm-12">
+                    <div class="form-group">
+                        <label class="form-group">Offer URL</label>
+                        <input placeholder="Offer URL" type="text" size="30" formControlName="offer_url"
+                            class="form-control" />
+                        <p *ngFor="
+                                let validation of account_validation_messages.offer_url
+                            ">
+                            <span class="help-block text-danger" *ngIf="
+                                    offerForm
+                                        .get('offer_url')
+                                        .hasError(validation.type) &&
+                                    (offerForm.get('offer_url').dirty ||
+                                        offerForm.get('offer_url').touched)
+                                ">{{ validation.message }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col col-sm-6">
+                    <div class="form-group">
+                        <label class="form-group">Seller Name</label>
+                        <input placeholder="Seller Name" type="text" size="30" formControlName="seller_name"
+                            class="form-control" />
+                        <p *ngFor="
+                                let validation of account_validation_messages.seller_name
+                            ">
+                            <span class="help-block text-danger" *ngIf="
+                                    offerForm
+                                        .get('seller_name')
+                                        .hasError(validation.type) &&
+                                    (offerForm.get('seller_name').dirty ||
+                                        offerForm.get('seller_name').touched)
+                                ">{{ validation.message }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col col-sm-6">
+                    <div class="form-group">
+                        <label class="form-group">Product Price</label>
+                        <input  appTwoDigitDecimaNumber placeholder="Product Price" type="text" size="30"
+                            formControlName="product_price" class="form-control" />
+                        <!-- (keypress)="constant.function.isNumberOnly($event)" currencyMask   [options]="{ prefix: ''}"-->
+                        <p *ngFor="
+                                let validation of account_validation_messages.product_price
+                            ">
+                            <span class="help-block text-danger" *ngIf="
+                                    offerForm
+                                        .get('product_price')
+                                        .hasError(validation.type) &&
+                                    (offerForm.get('product_price').dirty ||
+                                        offerForm.get('product_price').touched)
+                                ">{{ validation.message }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div style="float: left;">
+                <button type="submit" style="margin-right: 5px;" class="btn btn-light prodOvercolor" label="CREATE"
+                    (click)="offerSubmit()">
+                    Add Offer
+                </button>
+                <button type="button" class="btn btn-light prodOvercolor" label="CREATE" (click)="cancelOffer()">
+                    Cancel Offer
+                </button>
+            </div>
+        </div>
+    </form>
+</ng-template>
+<!-- Model for Images -->

@@ -1,0 +1,153 @@
+<ngx-ui-loader></ngx-ui-loader>
+<div [@routerTransition] class="marginTop">
+    <!-- <p>Create New products</p> -->
+
+    <div>
+
+        <div class="row">
+            <div class="col col-sm-12" style="margin-bottom: 21px;">
+                <div class="col col-sm-2">
+                    <div style="float: left">
+                        <strong>Products </strong>
+                    </div>
+                </div>
+                <div class="col col-sm-10" style="float: right">
+                    <div style="float: right">
+                        <button type="submit" style="margin-right: 5px;" [routerLink]="['/products/add-products']"
+                            routerLinkActive="router-link-active" class="btn btn-primary" label="CREATE">Add New
+                            Product</button>
+                        <!-- <button type="button" class="btn btn-light prodOvercolor" label="CREATE">cancel</button> -->
+                        <!-- <input type="text" #myInput size="50" [(ngModel)]="catFilter" placeholder="Search"
+                                                        (input)="categoryFilterItem(myInput.value)" style="width:inherit"> -->
+
+                        <!-- <input type="text" #myInput size="25" [(ngModel)]="prodFilter"
+                            (input)="categoryFilterItem(myInput.value)" placeholder="Search" style="width:inherit"> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div>
+            <p-table [columns]="prodCol" [value]="products" [responsive]="true" [columnResizeMode]="'expand'" 
+             [scrollable]="true" scrollHeight="500px" scrollWidth="500px">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns let i = index" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon *ngIf="i == 0" [field]="col.field" ariaLabel="Activate to sort"
+                                ariaLabelDesc="Activate to sort in descending order"
+                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns">
+
+                            <span *ngIf="col.field === 'name' && col.header ==='Product Name'" class="cursor" (click)="editProduct(rowData)">
+                                {{rowData[col.field]}}
+                            </span>
+
+                            <span *ngIf="col.field === 'price' && col.header ==='Price'">
+                                ${{rowData[col.field]}}
+                            </span>
+
+                            <span *ngIf="col.field === 'category' && col.header ==='Category'">
+                                <span *ngFor="let cats of rowData[col.field]">
+                                        {{cats.category}}
+                                </span>
+
+                            </span>
+
+                            <span *ngIf="col.field === 'createdDate' && col.header ==='Created'">
+                                {{rowData[col.field] | date: 'MM/dd/yyyy'}}
+                            </span>
+                            <span *ngIf="col.field === 'updatedDate' && col.header ==='Updated'">
+                                {{rowData[col.field] | date : 'MM/dd/yyyy'}}
+                            </span>
+
+                            <span *ngIf="col.field === 'createdBy' && col.header ==='created by'">
+                                {{rowData[col.field]}}
+                            </span>
+
+                            <span *ngIf="col.field === '' && col.header ===''">
+                                <p-inputSwitch [(ngModel)]="rowData.isActivated" value="#{rowData.isActivated}"
+                                    (onChange)="submitProductStatus($event,rowData)">
+                                </p-inputSwitch>
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+
+        <!-- <div>
+            <div class="row">
+                <div class="col col-sm-12">
+                    <div class="card mb-12">
+                        <div class="card-header">
+                            <div style="float: left">
+                                Products
+                            </div>
+                            <div style="float: right">
+                                <button type="submit" style="margin-right: 5px;"
+                                    [routerLink]="['/products/add-products']" routerLinkActive="router-link-active"
+                                    class="btn btn-primary" label="CREATE">Add New Product</button>
+
+                                <input type="text" #myInput size="25" [(ngModel)]="prodFilter"
+                                    (input)="categoryFilterItem(myInput.value)" placeholder="Search"
+                                    style="width:inherit">
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <p-table [columns]="prodCol" [value]="products">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns let i = index" [pSortableColumn]="col.field">
+                                            {{col.header}}
+                                            <p-sortIcon *ngIf="i == 0" [field]="col.field" ariaLabel="Activate to sort"
+                                                ariaLabelDesc="Activate to sort in descending order"
+                                                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns">
+                                            <span>{{rowData[col.field]}}</span>
+                                            <span *ngIf="col.field === 'createdDate' && col.header ==='Created'">
+                                                    {{rowData[col.field] | date: 'MM/dd/yyyy'}}
+                                            </span>
+                                            <span *ngIf="col.field === 'updatedDate' && col.header ==='Updated'">
+                                                    {{rowData[col.field] | date : 'MM/dd/yyyy'}}
+                                            </span>
+                                            <span *ngIf="col.field === '' && col.header ===''">
+                                                <p-inputSwitch [(ngModel)]="rowData.isActivated"
+                                                    value="#{rowData.isActivated}"
+                                                    (onChange)="submitProductStatus($event,rowData)">
+                                                </p-inputSwitch>
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div class="card-body" *ngIf="categories?.length > 0">
+                                <p-paginator [rows]="10" [totalRecords]="totalLength" [rowsPerPageOptions]="[5,10,20,30,40]"
+                                (onPageChange)="paginate($event)">
+                            </p-paginator>
+                        </div> -->
+    </div>
+</div>

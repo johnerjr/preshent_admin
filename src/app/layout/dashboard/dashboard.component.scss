@@ -1,0 +1,86 @@
+
+.uploadFileMargine {
+  margin-top: 6% !important;
+}
+
+.login-content {
+  display:flex;
+  justify-items:center;
+  align-items:center;
+  height:100%;
+  padding:15px;
+  background-color: #f9f9f9
+}
+.drop-box{
+  width:560px;
+  background-color: #fff;
+  border-radius: 8px;
+  border:1px dashed #BECCD4;
+  -webkit-box-shadow:0 1px 25px 0 rgba(0,0,0,0.3);
+  box-shadow:0 1px 25px 0 rgba(0,0,0,0.3);
+  margin: 0 auto;
+}
+.drop-box-area{
+  min-height:280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  background-color:transparent!important
+}
+figure{
+  margin:0
+}
+h2{
+  color: #4D4D4D;
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 400;
+  margin:0;
+  padding-top:10px
+}
+h2 span{
+  display:block;
+  font-size:13px;
+  color: #B7B7B7;
+  text-align: center;
+  line-height: 30px
+}
+.browse-btn{
+  width:120px;
+  height: 34px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #0185CD;
+  border-radius: 2px;
+  margin:10px auto;
+}
+.browse-btn input{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 32px;
+  left:0 ;
+  right: 0;
+  width: 100%;
+  border-radius: 2px;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+.browse-text{
+  font-size:11px
+}
+.browse-btn span{
+  font-size: 13px;
+  line-height: 32px;
+  color: #0185CD;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dasbordTextColor {
+  color: #0185CD;
+}

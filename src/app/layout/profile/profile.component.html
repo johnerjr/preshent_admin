@@ -1,0 +1,53 @@
+<div class="formContainer marginTop">
+  <form [formGroup]="profileForm" novalidate (ngSubmit)="onProfileSubmit()">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <h4><strong>Profile</strong></h4>
+          <div class="row">
+            <div class="form-group col-md-6"
+              [ngClass]="{'has-error':profileForm.get('firstName').invalid && (profileForm.get('firstName').dirty || profileForm.get('firstName').touched)}">
+              <span class="ui-float-label">
+                <input [readOnly]="disableEnableProfile" (keypress)="constant.function.alphabetOnly($event)" type="text"
+                  formControlName="firstName" class="form-control" pInputText>
+                <!-- <label for="float-input">First Name</label> -->
+                <span  *ngIf="!disableEnableProfile">
+                  <div *ngFor="let validation of account_validation_messages.firstName">
+                    <span class="help-block"
+                      *ngIf="profileForm.get('firstName').hasError(validation.type) && (profileForm.get('firstName').dirty || profileForm.get('firstName').touched)">{{validation.message}}
+                    </span>
+                  </div>
+                </span>
+              </span>
+            </div>
+            <div class="form-group col-md-6"
+              [ngClass]="{'has-error':profileForm.get('lastName').invalid && (profileForm.get('lastName').dirty || profileForm.get('lastName').touched)}">
+              <span class="ui-float-label">
+                <input [readOnly]="disableEnableProfile" pInputText (keypress)="constant.function.alphabetOnly($event)"
+                  type="text" formControlName="lastName" class="form-control">
+                <!-- <label for="float-input">Last Name</label> -->
+                <div *ngFor="let validation of account_validation_messages.lastName">
+                  <span class="help-block validError"
+                    *ngIf="profileForm.get('lastName').hasError(validation.type) && (profileForm.get('lastName').dirty || profileForm.get('lastName').touched)">{{validation.message}}
+                  </span>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <button type="button" *ngIf="disableEnableProfile" (click)="EditProfile()"
+                class="btn btn-primary btn-block">Edit</button>
+              <button *ngIf="!disableEnableProfile" type="submit" class="btn btn-primary btn-block">Update</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" (click)="disableUpdateButton()" *ngIf="!disableEnableProfile"
+                class="btn btn-danger btn-block">Cancel </button>
+            </div>
+          </div>
+        </div>
+  
+  
+      </div>
+    </form>
+  
+</div>

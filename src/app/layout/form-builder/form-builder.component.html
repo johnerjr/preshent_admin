@@ -1,0 +1,413 @@
+<ngx-ui-loader></ngx-ui-loader>
+<div [@routerTransition] class="marginTop">
+    <p> <strong>Flow Builder</strong></p>
+
+    <div class="row prodEditCategory" style="margin-bottom: 15px;">
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary" (click)="saveFlowBuilder()" label="CREATE">Save
+                Changes</button>
+            <button type="button" class="btn btn-light prodOvercolor" label="CREATE"
+                style="border: 1px solid gray;margin-left: 5px;" (click)="cancelFlowBuilder()">cancel</button>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="card mb-12 scrollFlow card-width">
+            <div class="card-body">
+
+                <div class="row flex-nowrap ">
+                    <div class="col-sm-12 ">
+                        <div class="d-flex cardFlow">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div style="float: left">
+                                        All Flows
+                                    </div>
+                                </div>
+                                <div class="card-body search-results" 
+                                infiniteScroll [infiniteScrollDistance]="2" 
+                                [infiniteScrollThrottle]="50" [scrollWindow]="false">
+                                    <div class="col col-sm-12">
+
+                                        <div class="row prodEditCategory" style="margin-bottom: 15px;">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="card-title preColor cursor"
+                                                            (click)="openOfferModel(offerModel)">
+                                                            <i class="fa fa-fw fa-plus"></i> Add Flow
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- GET ALL FLOWS -->
+                                        <div class="row" *ngIf="flows?.length > 0" cdkDropList #todoList="cdkDropList"
+                                            [cdkDropListData]="flows" (cdkDropListDropped)="drop($event)">
+                                            <div class="col-12 text-xs-center"
+                                                *ngFor="let flow of flows let i = index" cdkDrag>
+                                                <div class="card mb-2 cursor prodCategory"
+                                                    [ngStyle]="{'background-color': flow?.id === selectedFlowID ? '#3c9dcf' : 'white' }">
+                                                    <div>
+                                                        <div class="card-body"
+                                                            [ngStyle]="{'color': flow?.id === selectedFlowID ? 'white' : 'black' }">
+                                                            <div class="row prodEditCategory"
+                                                                (click)="getClickFlow(flow,i); selectedFlow(flow.id);">
+                                                                <!-- getClickFlow(flow,i); -->
+                                                                <div class="col-1 text-xs-center">
+                                                                    <i class="fa fa-bars" aria-hidden="true"></i>
+                                                                </div>
+                                                                <div class="col-11 text-xs-center">
+                                                                    <span
+                                                                        (click)="editFlow(flow, offerModel);">{{flow?.flow_name | titlecase}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- GET ALL FLOWS -->
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FOR ALL FLOW QUESTION -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div style="float: left">
+                                        Flow Question
+                                    </div>
+                                </div>
+                                <div class="card-body  search-results" 
+                                infiniteScroll [infiniteScrollDistance]="2" 
+                                [infiniteScrollThrottle]="50" [scrollWindow]="false">
+
+                                    <!-- GET ALL QUESTIONS -->
+                                    <div class="row">
+                                        <div class="col-12 text-xs-center"
+                                            *ngFor="let question of flow_questions let i = index">
+                                            <div class="card mb-2 cursor prodCategory"
+                                                [ngStyle]="{'background-color': question?.id === selectedQuestionID ? '#3c9dcf' : 'white' }">
+                                                <div>
+                                                    <div class="card-body"
+                                                        [ngStyle]="{'color': question?.id === selectedQuestionID ? 'white' : 'black' }">
+                                                        <div class="row prodEditCategory"
+                                                            (click)="getClickQuestions(question.id); selectedFlowQuestion(question.id)">
+                                                            <div class="col-7 text-xs-center">
+                                                                {{question?.question_name | titlecase}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 text-xs-center" *ngIf="selected_flow">
+                                            <div class="card mb-2 cursor">
+                                                <div class="card-body">
+                                                    <h6>What do you want save on?</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 text-xs-center" *ngIf="selected_flow">
+                                            <!-- #0185cd -->
+                                            <div class="card mb-2 cursor prodCategory"
+                                                [ngStyle]="{'background-color': 'goProduct' === selectedQuestionProduct ? '#3c9dcf' : 'white' }">
+                                                <div class="card-body"
+                                                    (click)="getProductClickQuestions('goProduct'); getFlowCategory();"
+                                                    [ngStyle]="{'color': 'goProduct' === selectedQuestionProduct ? 'white' : 'black'}">
+                                                    <h6>Go To Product</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <!-- GET ALL QUESTIONS -->
+
+                                </div>
+                            </div>
+
+                            <!-- FOR ALL ANSWER -->
+                            <div class="card" *ngIf="answers?.length > 0">
+                                <div class="card-header">
+                                    <div style="float: left">
+                                        Answer
+                                    </div>
+                                </div>
+                                <div class="card-body search-results" 
+                                infiniteScroll [infiniteScrollDistance]="2" 
+                                [infiniteScrollThrottle]="50" [scrollWindow]="false">
+
+                                    <!-- GET ALL ANSWERS -->
+                                    <div class="row" *ngIf="answers?.length > 0">
+                                        <div class="col-12 text-xs-center"
+                                            *ngFor="let answer of answers let i = index">
+                                            <div class="card mb-2 cursor"
+                                                [ngStyle]="{'background-color': answer?.id === selectedAnswerID ? '#3c9dcf' : 'white' }">
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-1 text-xs-center">
+                                                                <input type="checkbox" [value]="answer.id"
+                                                                    (change)="onAnswerCheckboxSelect(answer.id,i)"
+                                                                    [checked]="answer.ansCheck === true ? true : false" />
+                                                            </div>
+                                                            <div class="col-10 text-xs-center">
+                                                                <div class="row prodEditCategory">
+                                                                    <!-- (click)="getClickAnswers(answer.id,i);" -->
+                                                                    <div class="col-xl-7 text-xs-center">
+                                                                        {{answer?.answer_name | titlecase}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- GET ALL ANSWERS -->
+
+
+                                </div>
+                            </div>
+                            <!-- FOR ALL ANSWER -->
+
+
+                            <!-- FOR ALL Cetegories -->
+                            <div class="card flex-fill" *ngIf="cats?.length > 0">
+                                <div class="card-header">
+                                    <div style="float: left">
+                                        Categories
+                                    </div>
+                                </div>
+
+                                <div class="card-body search-results" *ngIf="cats?.length > 0" 
+                                    infiniteScroll [infiniteScrollDistance]="2" 
+                                    [infiniteScrollThrottle]="50" [scrollWindow]="false">
+                                    <div *ngFor="let category of cats; let i = index;">
+                                        <div id="prodCat" class="row">
+                                            <div class="col-12 text-xs-center">
+                                                <div class="card mb-2 cursor prodCategory">
+                                                    <div class="card-body">
+                                                        <div class="row prodEditCategory">
+
+                                                            <div class="col-1 text-xs-center">
+                                                                <input type="checkbox" [value]="category.id"
+                                                                    id="c{{category.id}}"
+                                                                    (change)="checkboxClick('category', category.id)"
+                                                                    [checked]="category.catCheck === true ? true : false" />
+                                                            </div>
+                                                            <div class="col-11 text-xs-center">
+                                                                {{ category?.name | titlecase }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- // FOR SUB-CATEGORIES // -->
+                                                <div *ngFor="let subCategory of subCats; let j= index;">
+                                                    <div *ngIf="subCategory.categoriesID == category.id">
+                                                        <div class="row" class="subcats{{category.id}}"
+                                                            style="display: none;">
+                                                            <div class="col-1 text-xs-center">
+                                                            </div>
+                                                            <div class="col-11 text-xs-center">
+                                                                <div class="card mb-3 cursor">
+                                                                    <div class="card-body prodCategory">
+                                                                        <div class="row prodEditCategory">
+                                                                            <div class="col-1 text-xs-center">
+                                                                                <input type="checkbox"
+                                                                                    [value]="subCategory.id"
+                                                                                    id="s{{subCategory.id}}"
+                                                                                    class="s{{category.id}}"
+                                                                                    (change)="checkboxClick('subCategory', subCategory.id)"
+                                                                                    [checked]="subCategory.subCatCheck === true ? true : false" />
+                                                                            </div>
+                                                                            <div class="col-11 text-xs-center">
+                                                                                {{ subCategory?.name | titlecase }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- // FOR MINOR-CATEGORIES // -->
+                                                                <div
+                                                                    *ngFor="let minorCategory of minorCats; let k = index;">
+                                                                    <div
+                                                                        *ngIf="minorCategory.subCategoriesID == subCategory.id">
+                                                                        <div class="row">
+                                                                            <div class="col-1 text-xs-center">
+                                                                            </div>
+                                                                            <div class="col-11 text-xs-center">
+                                                                                <div class="card mb-3 prodCategory">
+                                                                                    <div class="card-body prodCategory">
+                                                                                        <div class="row prodEditCategory">
+                                                                                            <div
+                                                                                                class="col-1 text-xs-center">
+                                                                                                <input type="checkbox"
+                                                                                                    [value]="minorCategory.id"
+                                                                                                    id="m{{minorCategory.id}}"
+                                                                                                    class="m{{subCategory.id}} mc{{category.id}}"
+                                                                                                    (change)="checkboxClick('minorCategory', minorCategory.id)"
+                                                                                                    [checked]="minorCategory.minorCatCheck === true ? true : false" />
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="col-11 text-xs-center">
+                                                                                                {{ minorCategory?.name | titlecase }}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- FOR ALL Categories -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model for Add Flow -->
+    <ng-template #offerModel let-modal>
+        <form [formGroup]="flowForm" novalidate>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title" *ngIf="!(editFlowStatus)">Add Flow</h4>
+                <h4 class="modal-title" id="modal-basic-title" *ngIf="editFlowStatus">Edit Flow</h4>
+                <hr>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col col-sm-6">
+                        <div class="">
+                            <label class="form-group">Flow Name</label>
+                            <input placeholder="Flow Name" type="text" size="30" formControlName="flow_name"
+                                class="form-control">
+                            <p *ngFor="let validation of account_validation_messages.flow_name">
+                                <span class="help-block  text-danger"
+                                    *ngIf="flowForm.get('flow_name').hasError(validation.type) && (flowForm.get('flow_name').dirty || flowForm.get('flow_name').touched)">{{validation.message}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col col-sm-6">
+                        <label class="form-group">Flow Image</label>
+                        <div class="col col-sm-12">
+                            <div class="row">
+                                <div class="col col-sm-6" *ngIf="imageSrc && imageSrc != 'null'">
+                                    <span class="pull-right clickable close-icon cursor"
+                                        style="float:right; color: red;" data-effect="fadeOut"
+                                        (click)="removeImage(editflows)"><i class="fa fa-times-circle"></i></span>
+                                    <div class="card imgCard cursor" style="margin-bottom: 20px;">
+                                        <img [src]="imageSrc" width="100%" height="100%;" />
+                                    </div>
+
+                                </div>
+
+                                <div class="col col-sm-6" *ngIf="!(imageSrc) || imageSrc == 'null'">
+                                    <div class="card imgCard" style="margin-bottom: 20px;">
+                                        <div class="card-body cursor">
+                                            <div class="">
+                                                <input type="file" name="imageUpload"
+                                                    (change)="fileChangeEvent($event);" id="imageUpload" class="hide" />
+                                                <label for="imageUpload"
+                                                    class="btn btn-primary btn-circle btn-xl imgLabel">
+                                                    <i class="fa fa-fw fa-plus"></i></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col col-sm-8">
+                        <div class="">
+                            <label class="form-group">Choose Questions</label>
+                            <div class="row">
+                                <div class="col col-sm-8">
+                                    <div class="" *ngIf="questions">
+                                        <select formControlName="flow_question" id="question" [(ngModel)]="selectQue"
+                                            class="form-control">
+                                            <option value="" disabled selected>Questions</option>
+                                            <option *ngFor="let question of questions; let i = index"
+                                                [ngValue]="question">
+                                                {{question.question_name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col col-sm-2">
+                                    <button type="button" class="btn btn-primary" (click)="selectQuestion();"
+                                        label="CREATE">ADD</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row question_margin" *ngIf="selectedQuestion.length>0" cdkDropList #todoList="cdkDropList"
+                    [cdkDropListData]="selectedQuestion" (cdkDropListDropped)="dropQuestion($event)">
+                    <div class="col col-sm-8">
+                        <div class="col-sm-12" *ngFor="let que of selectedQuestion" cdkDrag>
+                            <div class="card question_margin">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col col-sm-8">
+                                            <div class="row">
+                                                <div class="col col-sm-2">
+                                                    <i class="fa fa-bars cursor" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col col-sm-10">
+                                                    <span style="color: black;">
+                                                        {{que.question_name}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="modal-footer" style="float: left">
+                <div style="float: left">
+                    <button type="button" style="margin-left: 5px;" class="btn btn-light prodOvercolor"
+                        *ngIf="!(editFlowStatus)" label="CREATE" (click)="flowSubmit(editflows);">Create</button>
+                    <button type="button" style="margin-left: 5px;" class="btn btn-light prodOvercolor"
+                        *ngIf="editFlowStatus" label="CREATE" (click)="flowSubmit(editflows);">Update</button>
+                    <button type="button" class="btn btn-light prodOvercolor" label="CREATE"
+                        (click)="cancelFlow();">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <!-- Model for Images -->

@@ -1,0 +1,56 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}" style="margin-top: 31px;">
+    <div class="list-group">
+
+        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw  fa-home"></i>&nbsp;
+            <span>{{ 'Home' | translate }}</span>
+        </a>
+        <a [routerLink]="['/categories']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-folder"></i>&nbsp;
+            <span>{{ 'Categories' | translate }}</span>
+        </a>
+        <a [routerLink]="['/products']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-th"></i>&nbsp;
+            <span>{{ 'Products' | translate }}</span>
+        </a>
+        <a [routerLink]="['/question']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-question-circle"></i>&nbsp;
+            <span>{{ 'Question' | translate }}</span>
+        </a>
+        <a [routerLink]="['/flow-builder']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-wifi"></i>&nbsp;
+            <span>{{ 'Flow Builder' | translate }}</span>
+        </a>
+
+
+        <div class="header-fields">
+            <div class="nested-menu">
+                <a class="list-group-item" (click)="addExpandClass('profile')">
+                    <span><i class="fa fa-user"></i>&nbsp; {{name ? name : 'undefied'}}</span>
+                </a>
+                <li class="nested" [class.expand]="showMenu === 'profile'">
+                    <ul class="submenu">
+                        <li>
+                            <a href="javascript:void(0)" [routerLink]="['/profile']">
+                                <span><i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" [routerLink]="['/settings']">
+                                <span><i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/login']" (click)="onLoggedout()">
+                                <span><i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+
+
+
+    </div>
+</nav>

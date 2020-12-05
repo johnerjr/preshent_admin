@@ -1,0 +1,130 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/bootstrap";
+@import "spinner";
+@import "utils";
+@import "rtl";
+@import "responsive";
+
+@media print {
+    .breadcrumb {
+        display: none !important;
+    }
+}
+.cursor{
+    cursor: pointer;
+}
+
+.marginTop {
+    margin-top: 6% !important;
+}
+
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke: #d62d20;
+    }
+    40% {
+        stroke: #0057e7;
+    }
+    66% {
+        stroke: #008744;
+    }
+    80%,
+    90% {
+        stroke: #ffa700;
+    }
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 0.6rem !important;
+}
+
+// for check box //@at-root
+.custom-control {
+    padding-left: 30px !important;
+}
+.custom-control-label::before {
+    width: 18px !important;
+    height: 18px !important;
+}
+.custom-checkbox .custom-control-label::before,
+.custom-checkbox .custom-control-label::after {
+    top: 0 !important;
+}
+.custom-checkbox .custom-control-label::before {
+    border-radius: 0 !important;
+}
+.custom-control-label::before {
+    border: 1px solid #e6e6e6 !important;
+    background-color: transparent !important;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #0185cd !important;
+    border-color: #0185cd !important;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+    // background-image: url("assets/images/check-mark-black-outline.svg") !important;
+    background-image: url("../assets/images/check-mark-black-outline.svg") !important;
+
+    background-size: 11px 8px !important;
+}
+.filter-row .custom-control {
+    padding-left: 25px !important;
+}
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before,
+.custom-radio .custom-control-input:active ~ .custom-control-label::before {
+    border-color: #0185cd !important;
+    background-color: #fff !important;
+}
+.custom-radio .custom-control-label::before {
+    width: 18px !important;
+    height: 18px !important;
+    top: 0 !important;
+    left: -25px !important;
+}
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after,
+.custom-radio .custom-control-input:active ~ .custom-control-label::before {
+    background: #007bff;
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    left: -20px;
+    top: 5px;
+}
+.custom-control {
+    top: 5px;
+}
+.custom-checkbox .custom-control-label::after {
+    top: 4px !important;
+}
+.advanceSearch .min-max .custom-control {
+    padding-left: 6px !important;
+}
+.cursor {
+    cursor: pointer !important;
+}
+
+.preColor {
+    color: #28a8ea !important;
+}
+
+// FLOW FOR HOVER SHOW TEXT COLOR //
+.prodCategory:hover {
+    color: #28a8ea;
+}
+.prodEditCategory:hover .edit {
+    display: block;
+}
+
+.help-block {
+    color: #d62d20;
+}
+
+div.sk-chasing-dots {
+    margin: 0px !important;
+    width: 0% !important;
+    height: 0% !important;
+  }
+

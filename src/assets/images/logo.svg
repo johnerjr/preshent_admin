@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="244.211" height="81.045" viewBox="0 0 244.211 81.045">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.777" y1="20.106" x2="0.154" y2="-24.009" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#7cad41"/>
+      <stop offset="1" stop-color="#246478"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="-1.607" y1="2.645" x2="-1.607" y2="-0.414" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="-1.744" y1="1.551" x2="-1.744" y2="-1.307" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" x1="-2.286" y1="5.016" x2="-2.286" y2="0.407" gradientUnits="objectBoundingBox">
+      <stop offset="0.04" stop-color="#7cad41"/>
+      <stop offset="1" stop-color="#246478"/>
+    </linearGradient>
+  </defs>
+  <g id="logos_1" transform="translate(-0.959 0)">
+    <text id="Préshent" transform="translate(70.624 61.844)" fill="#246478" font-size="42" font-family="Impact"><tspan x="0" y="0">Prés</tspan><tspan y="0" fill="#173042">hent</tspan></text>
+    <text id="GLOBAL_SUSTAINABILITY" data-name="GLOBAL SUSTAINABILITY" transform="translate(71.798 79.045)" fill="#7cad41" font-size="9" font-family="Roboto-Light, Roboto" font-weight="300" letter-spacing="0.18em"><tspan x="0" y="0">G</tspan><tspan y="0" letter-spacing="0.15em">L</tspan><tspan y="0">OBAL SUS</tspan><tspan y="0" letter-spacing="0.14em">T</tspan><tspan y="0">AI</tspan><tspan y="0" letter-spacing="0.19em">N</tspan><tspan y="0">ABIL</tspan><tspan y="0" letter-spacing="0.16em">I</tspan><tspan y="0" letter-spacing="0.19em">T</tspan><tspan y="0">Y</tspan></text>
+    <rect id="Rectangle_30" data-name="Rectangle 30" width="154.197" height="1.714" transform="translate(72.385 66.657)" fill="url(#linear-gradient)"/>
+    <path id="Path_576" data-name="Path 576" d="M5.348,50.988A29.492,29.492,0,0,1,33.737,23c-.841-.119-1.69-.206-2.547-.246a29.5,29.5,0,0,0-2.983,58.905,23.011,23.011,0,0,0,2.563,0A29.492,29.492,0,0,1,5.348,50.988Z" transform="translate(0 -4.699)" fill="#7cad41"/>
+    <path id="Path_577" data-name="Path 577" d="M54.66,81.449S34.769,89.495,11.37,70l1.865,5.657S36.467,97.62,54.66,81.449Z" transform="translate(-2.15 -14.459)" fill="#4b6c32"/>
+    <path id="Path_578" data-name="Path 578" d="M60.974,50.311S32.767,52.406,19.35,41.52l10.315-2.69a62.793,62.793,0,0,0,27.667,4.761Z" transform="translate(-3.799 -8.021)" fill="#4b6c32"/>
+    <path id="Path_579" data-name="Path 579" d="M11,57.566S31.407,75.974,59.479,68.492l1.19-8.418S41.064,70.785,13.483,49.64Z" transform="translate(-2.074 -10.254)" fill="#4b6c32"/>
+    <path id="Path_580" data-name="Path 580" d="M34.8,50.731c-9.521.674-18.075-.651-21.352-2.079a24.85,24.85,0,0,0-2.46,7.934c5.181,2.158,13.679,3.174,23.176,2.539,11.394-.793,21.018-3.864,25.049-7.562a24.969,24.969,0,0,0-3.61-6.7C53.225,47.883,44.513,50.049,34.8,50.731Z" transform="translate(-2.072 -9.266)" fill="url(#linear-gradient-2)"/>
+    <path id="Path_581" data-name="Path 581" d="M34.882,71.216c-9.7.682-18.352-.428-23.5-2.674A25.025,25.025,0,0,0,13.245,74.2C17.4,77.04,26.733,78.8,36.6,78.111c9.315-.659,18.574-3.626,23.01-6.9a24.756,24.756,0,0,0,1.143-8.418C57.36,66.86,47.14,70.352,34.882,71.216Z" transform="translate(-2.153 -12.97)" fill="url(#linear-gradient-3)"/>
+    <path id="Path_582" data-name="Path 582" d="M39.349,89.545A39.99,39.99,0,0,1,22.29,87.22a24.946,24.946,0,0,0,34.626-2.96c.182-.214.365-.428.54-.651A37.109,37.109,0,0,1,39.349,89.545Z" transform="translate(-4.406 -17.27)" fill="#7cad41"/>
+    <path id="Path_583" data-name="Path 583" d="M36.115,41.832c6.951-.484,13.028-2.095,16.7-4.166A24.954,24.954,0,0,0,19.35,40.19C23.293,41.6,29.387,42.316,36.115,41.832Z" transform="translate(-3.799 -6.69)" fill="url(#linear-gradient-4)"/>
+    <path id="Path_584" data-name="Path 584" d="M51.111,26.392c3.69-1.5,7.506-2.563,7.506-2.563C51.539,15.664,43.462,14.6,38.4,16.886c-4.094,1.841-5.07,4.491-5.07,4.491a29.286,29.286,0,0,1,12.282.341c-5-.4-12.251,1.055-12.251,1.055C38.1,29.867,44.851,28.939,51.111,26.392Z" transform="translate(-6.687 -3.271)" fill="#6da542"/>
+    <path id="Path_585" data-name="Path 585" d="M27.8,6.713A66.426,66.426,0,0,1,27.71,0C19.331,3.555,16.316,9.767,16.816,14.433c.413,3.769,2.285,5.261,2.285,5.261A24.819,24.819,0,0,1,22.6,9.9a47.26,47.26,0,0,0-2.38,10.124C27.179,18.075,28.2,12.4,27.8,6.713Z" transform="translate(-3.265)" fill="#7cad41"/>
+    <text id="TM" transform="translate(228.17 33.232)" fill="#231f20" font-size="11" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="0" y="0">TM</tspan></text>
+  </g>
+</svg>

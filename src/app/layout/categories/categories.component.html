@@ -1,0 +1,243 @@
+<ngx-ui-loader></ngx-ui-loader>
+<div [@routerTransition] class="marginTop">
+    <p><strong>Create New Category</strong></p>
+
+    <div>
+        <form [formGroup]="categoriesForm" novalidate (ngSubmit)="onCategoriesSubmit()">
+            <div class="row">
+                <div class="col col-sm-3">
+                    <div class="form-group">
+                        <input placeholder="Name" type="text" size="30" formControlName="name" class="form-control">
+                        <div *ngFor="let validation of account_validation_messages.name">
+                            <span class="help-block  text-danger"
+                                *ngIf="categoriesForm.get('name').hasError(validation.type) && (categoriesForm.get('name').dirty || categoriesForm.get('name').touched)">{{validation.message}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-sm-3">
+
+                    <div class="form-group" *ngIf="allCategories">
+                        <select formControlName="categoriesID" id="category" (change)="subCategoryOptionClicked();"
+                            class="form-control">
+                            <option value="" selected>Category Parent</option>
+                            <option *ngFor="let category of allCategories; let i = index" [value]="category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col col-sm-3">
+                    <div class="form-group"
+                        *ngIf="showMicroOption && subCategoriesDetail && subCategoriesDetail?.length > 0 ">
+                        <select formControlName="subCategoriesID" id="subCategory" class="form-control">
+                            <option value="" selected>Sub-Category Parent</option>
+                            <option *ngFor="let subCategory of subCategoriesDetail; let i = index"
+                                [value]="subCategory.id">
+                                {{subCategory.name}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col col-sm-3">
+                    <button type="submit" class="btn btn-primary" label="CREATE">CREATE</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr />
+
+    <div>
+        <div class="row">
+            <div class="col col-sm-12">
+                <div class="card mb-12">
+                    <div class="card-header">
+                        <!-- <div style="float: left">
+                            Manage Categories
+                        </div>
+                        <div style="float: right">
+                            <input type="text" #myInput size="50" [(ngModel)]="catFilter" placeholder="Search"
+                                (input)="categoryFilterItem(myInput.value)" style="width:inherit">
+                        </div> -->
+
+                        <div class="row">
+                            <div class="col-5 text-xs-center">
+                                Manage Category
+                            </div>
+                            <div class="col-7 text-xs-center">
+                                <input type="text" #myInput size="50" formControlName="catFilter"
+                                    [(ngModel)]="catFilter" placeholder="Search" (input)="
+                                            categoryFilterItem(
+                                                myInput.value
+                                            )
+                                        " style="width: inherit;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body" *ngIf="categories?.length > 0">
+                        <div *ngFor="let category of categories let i = index">
+                            <div class="row">
+                                <div class="col-12 text-xs-center">
+                                    <div class="card mb-2 cursor prodCategory">
+                                        <div class="card-body">
+
+                                            <div class="row prodEditCategory" *ngIf="editCategorybyId != category.id">
+                                                <div class="col-1 text-xs-center"
+                                                    (click)="getSubCategories(category.id,i);">
+                                                    <i class=""
+                                                        [ngClass]="(category?.subCategories?.length > 0)?'fa fa-chevron-down':'fa fa-chevron-right'"
+                                                        style="float: left; margin-left: 5px; color:black"
+                                                        aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col-8 text-xs-center"
+                                                    ng-show="editCategorybyId != category.id"
+                                                    (click)="getSubCategories(category.id,i);">
+                                                    {{category?.name | titlecase}}
+                                                </div>
+
+                                                <div class="col-3 text-xs-center ">
+                                                    <span style="color: black;">
+                                                        {{category?.TotalProduct || 0}} &nbsp; Products
+                                                    </span>
+                                                    <span class="margin_right_15 edit">
+                                                        <a href="javascript:void(0);"
+                                                            (click)="editCategories(category,i);">
+                                                            <i class="fa fa-pencil" style="color:grey;"></i></a>
+                                                    </span>
+                                                    <span class="inputstatus edit" *ngIf="category.status == 1">
+                                                        <p-inputSwitch [(ngModel)]="category.status"
+                                                            value="#{category.status}"
+                                                            (onChange)="submitCategoryStatus($event,category)">
+                                                        </p-inputSwitch>
+                                                    </span>
+                                                    <span class="inputstatus edit" *ngIf="category.status == 0">
+                                                        <p-inputSwitch [(ngModel)]="category.status"
+                                                            value="#{category.status}"
+                                                            (onChange)="submitCategoryStatus($event,category)">
+                                                        </p-inputSwitch>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- if EDIT category-->
+                                            <div class="row" *ngIf="editCategorybyId == category.id">
+                                                <div class="col-11 text-xs-center ">
+                                                    <input (keypress)="constant.function.alphabetOnly($event)"
+                                                        placeholder="Name" type="text" size="30"
+                                                        [(ngModel)]="editCategoryName" class="form-control">
+                                                </div>
+
+                                                <div class="col-1 text-xs-center">
+                                                    <span class="margin_right_15">
+                                                        <a href="javascript:void(0);"
+                                                            (click)="submitEditCategories(category)"><i
+                                                                class="fa fa-check"></i></a>
+                                                    </span>
+                                                    <span>
+                                                        <a href="javascript:void(0);"
+                                                            (click)="cancelEditCategories();"><i
+                                                                class="fa fa-close"></i></a>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- // FOR SUB-CATEGORIES // -->
+                                    <div *ngIf="category?.subCategories?.length > 0">
+                                        <div class="row"
+                                            *ngFor="let subCategory of category?.subCategories let j = index">
+                                            <div class="col-1 text-xs-center"></div>
+                                            <div class="col-11 text-xs-center">
+                                                <div class="card mb-3 cursor"
+                                                    (click)="getMinorCategories(subCategory.id,i,j);">
+                                                    <div class="card-body prodCategory">
+
+                                                        <div class="row prodEditCategory">
+                                                            <div class="col-1 text-xs-center">
+
+                                                                <i class=""
+                                                                    [ngClass]="(subCategory?.minorCategories?.length > 0)?'fa fa-chevron-down':'fa fa-chevron-right'"
+                                                                    style="float: left; margin-left: 5px; color:black"
+                                                                    aria-hidden="true"></i>
+                                                            </div>
+                                                            <div class="col-8 text-xs-center">
+                                                                {{subCategory?.name | titlecase}}
+                                                            </div>
+                                                            <div class="col-3 text-xs-center">
+                                                                <span style="color: black;">
+                                                                    {{subCategory?.TotalProduct || 0}} &nbsp; Products
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- // FOR MINOR-CATEGORIES // -->
+                                                <div *ngIf="subCategory?.minorCategories?.length > 0">
+                                                    <div class="row"
+                                                        *ngFor="let subCategory of subCategory?.minorCategories let j = index">
+                                                        <div class="col-1 text-xs-center"></div>
+                                                        <div class="col-11 text-xs-center">
+                                                            <div class="card mb-3 prodCategory">
+                                                                <div class="card-body prodCategory">
+
+                                                                    <div class="row prodEditCategory">
+                                                                        <div class="col-9 text-xs-center">
+                                                                            {{subCategory?.name | titlecase}}
+                                                                        </div>
+                                                                        <div class="col-3 text-xs-center">
+                                                                            <span style="color: black;">
+                                                                                {{subCategory?.TotalProduct || 0}}
+                                                                                &nbsp; Products
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- // FOR MINOR-CATEGORIES // -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- // FOR SUB-CATEGORIES // -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div #tt class="card-body" *ngIf="categories?.length <= 0">
+                        <div class="p-2 my-3" class="row">
+                            <div class="d-flex col-sm">
+                                <h6 class="errorMargin">No Records Available.......</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body" *ngIf="categories?.length > 0">
+
+                        <p-paginator [rows]="10" [totalRecords]="totalLength" [rowsPerPageOptions]="[5,10,20,30,40]"
+                            (onPageChange)="paginate($event)"></p-paginator>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand" [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >
+    <img src="../../../../assets/images/logo.svg" style="width: 75%;">
+    </a>
+    <button (click)="toggleSidebar()" class="navbar-toggler" type="button">
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <i aria-hidden="true" class="fa fa-bars text-muted"></i>
+    </button>
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown" ngbDropdown>
+                <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+                    <i class="fa fa-user"></i> {{name ? name : 'undefied'}} <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu-right" ngbDropdownMenu>
+                    <a class="dropdown-item" [routerLink]="['/profile']">
+                        <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/settings']">
+                        <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
+                    </a>
+                    <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
+                        <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,314 @@
+<ngx-ui-loader></ngx-ui-loader>
+<div [@routerTransition] class="marginTop">
+    <p><strong>Create New Question</strong></p>
+
+    <div>
+        <form [formGroup]="questionForm" novalidate (ngSubmit)="onQuestionSubmit()">
+            <div class="row">
+                <div class="col col-sm-8">
+                    <div class="form-group">
+                        <input placeholder="Question Name" type="text" size="30" formControlName="question_name"
+                            class="form-control">
+                        <div *ngFor="let validation of account_validation_messages.question_name">
+                            <span class="help-block  text-danger"
+                                *ngIf="questionForm.get('question_name').hasError(validation.type) && (questionForm.get('question_name').dirty || questionForm.get('question_name').touched)">{{validation.message}}
+                            </span>
+                        </div>
+                        <div *ngIf="questionForm.controls['question_name'].hasError('pattern')" class="help-block  text-danger">Please enter a valid Question Name!</div>
+
+                    </div>
+                </div>
+
+                <div class="col col-sm-3">
+                    <button type="submit" class="btn btn-primary" label="CREATE">CREATE</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div>
+
+        <div class="row">
+            <div class="col col-sm-6">
+
+                <div class="row">
+                    <div class="col col-sm-12">
+                        <div class="card mb-12">
+                            <div class="card-header">
+                                <div style="float: left">
+                                    All Questions
+                                </div>
+                            </div>
+
+                            <div class="card-body search-results" *ngIf="questions?.length > 0" 
+                                infiniteScroll [infiniteScrollDistance]="2" 
+                                [infiniteScrollThrottle]="50" [scrollWindow]="false">
+                                <div *ngFor="let question of questions let i = index">
+                                    <div class="row">
+                                        <div class="col-12 text-xs-center">
+                                            <div class="card mb-2 cursor prodCategory">
+                                                    <!-- #0185cd  -->
+                                                <div class="card-body"
+                                                    [ngStyle]="{'background-color': question?.id === selectedQuestionID ? '#3c9dcf' : 'white' }">
+                                                    <div *ngIf="editQuestionbyId != question.id">
+
+                                                        <div class="row prodEditCategory"
+                                                            (click)="getClickQuestion(question.id,i);"
+                                                            [ngStyle]="{'color': question?.id === selectedQuestionID ? 'white' : 'black' }">
+                                                            <div class="col-7 text-xs-center"
+                                                                ng-show="editQuestionbyId != question.id">
+                                                                {{question?.question_name | titlecase}}
+                                                            </div>
+
+                                                            <div class="col-3 text-xs-center"
+                                                                [ngStyle]="{'color': question?.id === selectedQuestionID ? 'white' : 'black' }">
+                                                                <span>
+                                                                    {{question?.Total}} Answer
+                                                                </span>
+                                                            </div>
+
+                                                            <div class="col-1 text-xs-center">
+                                                                <span class="margin_right_15 edit">
+                                                                    <a href="javascript:void(0);"
+                                                                        (click)="editQuestions(question,i);"
+                                                                        [ngStyle]="{'color': question?.id === selectedQuestionID ? 'black' : 'grey' }">
+                                                                        <i class="fa fa-pencil"></i></a>
+                                                                    <!-- style="color:grey;" -->
+                                                                </span>
+                                                            </div>
+
+                                                            <div class="col-1 text-xs-center">
+                                                                <span class="inputstatus edit"
+                                                                    *ngIf="question.isActivated == 1">
+                                                                    <p-inputSwitch [(ngModel)]="question.isActivated"
+                                                                        value="#{question.isActivated}"
+                                                                        (onChange)="submitQuestionStatus($event,question)">
+                                                                    </p-inputSwitch>
+                                                                </span>
+                                                                <span class="inputstatus edit"
+                                                                    *ngIf="question.isActivated == 0">
+                                                                    <p-inputSwitch [(ngModel)]="question.isActivated"
+                                                                        value="#{question.isActivated}"
+                                                                        (onChange)="submitQuestionStatus($event,question)">
+                                                                    </p-inputSwitch>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- if EDIT Question-->
+                                                    <div class="row" *ngIf="editQuestionbyId == question.id">
+                                                        <div class="col-11 text-xs-center ">
+                                                            <input placeholder="Name" type="text" size="30"
+                                                                [(ngModel)]="editQuestionName" class="form-control">
+                                                        </div>
+
+                                                        <div class="col-1 text-xs-center">
+                                                            <span class="margin_right_15">
+                                                                <a href="javascript:void(0);"
+                                                                    (click)="submitEditQuestions(question)"><i
+                                                                        class="fa fa-check"></i></a>
+                                                            </span>
+                                                            <span>
+                                                                <a href="javascript:void(0);"
+                                                                    (click)="cancelEditQuestions();"><i
+                                                                        class="fa fa-close"></i></a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- if EDIT Question-->
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- No Records Available....... -->
+                            <div class="card-body" *ngIf="questions?.length <= 0">
+                                <div class="p-2 my-3" class="row">
+                                    <div class="d-flex col-sm">
+                                        <h6 class="errorMargin">No Records Available.......</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- No Records Available....... -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-sm-6">
+                <div class="row">
+                    <div class="col col-sm-12">
+                        <div class="card mb-12">
+                            <div class="card-header">
+                                <div style="float: left">
+                                    Current Answer
+                                </div>
+                            </div>
+
+                            <div class="card-body search-results"
+                            infiniteScroll [infiniteScrollDistance]="2" 
+                            [infiniteScrollThrottle]="50" [scrollWindow]="false">
+                                <!-- <h5>Answers</h5> -->
+
+                                <div class="col col-sm-12">
+
+                                    <div class="row prodEditCategory"
+                                        *ngIf="!(createAnswerStatus) && selectedQuestionID">
+                                        <div class="col-sm-12">
+                                            <div class="card">
+                                                <div class="card-body" disabled="!selectedQuestionID">
+                                                    <div class="card-title preColor cursor" (click)="createAnswers();">
+                                                        <i class="fa fa-fw fa-plus"></i> Add Answer
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- if Create Answer -->
+                                    <form [formGroup]="answerForm" novalidate>
+                                        <div class="row" *ngIf="createAnswerStatus && selectedQuestionID">
+                                            <div class="col-10 text-xs-center ">
+                                                <input placeholder="Answer" type="text" size="30"
+                                                    formControlName="answer_name" class="form-control">
+                                                <div *ngFor="let validation of account_validation_messages.answer_name">
+                                                    <span class="help-block  text-danger"
+                                                        *ngIf="answerForm.get('answer_name').hasError(validation.type) && (answerForm.get('answer_name').dirty || answerForm.get('answer_name').touched)">{{validation.message}}
+                                                    </span>
+                                                </div>
+
+                                                <div *ngIf="answerForm.controls['answer_name'].hasError('pattern')" class="help-block  text-danger">Please enter a valid Answer!</div>
+                                            </div>
+
+                                            <div class="col-1 text-xs-center">
+                                                <span class="margin_right_15">
+                                                    <a href="javascript:void(0);" (click)="submitCreateAnswer()"><i
+                                                            class="fa fa-check"></i></a>
+                                                </span>
+                                            </div>
+                                            <div class="col-1 text-xs-center">
+                                                <span>
+                                                    <a href="javascript:void(0);" (click)="cancelCreateAnswer();"><i
+                                                            class="fa fa-close"></i></a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+                                    <!-- [cdkDropListConnectedTo]="[todoList]" class="example-list" -->
+                                    <div class="row prodEditCategory answer_margin" *ngIf="answers.length>0" cdkDropList
+                                        #todoList="cdkDropList" [cdkDropListData]="answers"
+                                        (cdkDropListDropped)="drop($event)">
+                                        <div class="col-sm-12" *ngFor="let answer of answers" cdkDrag>
+                                            <!-- | orderBy: 'position' -->
+                                            <div class="card answer_margin">
+                                                <div class="card-body">
+
+                                                    <div class="row" *ngIf="editAnswerbyId != answer.id">
+                                                        <div class="col-1 text-xs-center">
+                                                            <i class="fa fa-bars cursor" aria-hidden="true"></i>
+                                                        </div>
+
+                                                        <div class="col-9 text-xs-center ">
+                                                            <span style="color: black;">
+                                                                {{answer.answer_name}}
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="col-1 text-xs-center">
+                                                            <span class="margin_right_15 edit">
+                                                                <a href="javascript:void(0);"
+                                                                    (click)="editAnswers(answer);">
+                                                                    <i class="fa fa-pencil" style="color:grey;"></i></a>
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="col-1 text-xs-center ">
+
+                                                            <span class="inputstatus edit"
+                                                                *ngIf="answer.isActivated == 1">
+                                                                <p-inputSwitch [(ngModel)]="answer.isActivated"
+                                                                    value="#{question.isActivated}"
+                                                                    (onChange)="submitAnswerStatus($event,answer)">
+                                                                </p-inputSwitch>
+                                                            </span>
+                                                            <span class="inputstatus edit"
+                                                                *ngIf="answer.isActivated == 0">
+                                                                <p-inputSwitch [(ngModel)]="answer.isActivated"
+                                                                    value="#{question.isActivated}"
+                                                                    (onChange)="submitAnswerStatus($event,answer)">
+                                                                </p-inputSwitch>
+                                                            </span>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- if EDIT Answer-->
+                                                    <div class="row" *ngIf="editAnswerbyId == answer.id">
+                                                        <div class="col-10 text-xs-center ">
+                                                            <input placeholder="Name" type="text" size="30"
+                                                                [(ngModel)]="editAnswerName" class="form-control">
+                                                        </div>
+
+                                                        <div class="col-1 text-xs-center">
+                                                            <span class="margin_right_15">
+                                                                <a href="javascript:void(0);"
+                                                                    (click)="submitEditAnswer(answer);"><i
+                                                                        class="fa fa-check"></i></a>
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="col-1 text-xs-center">
+                                                            <span>
+                                                                <a href="javascript:void(0);"
+                                                                    (click)="cancelEditAnswers();"><i
+                                                                        class="fa fa-close"></i></a>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- if EDIT Answer-->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row prodEditCategory"
+                                        *ngIf="!(createAnswerStatus) && !(selectedQuestionID)">
+                                        <div class="col-sm-12">
+                                            <!-- Select any one Question....... -->
+                                            <div class="p-2 my-3 row">
+                                                <div class="d-flex col-sm">
+                                                    <h6 class="errorMargin preColor">Please select any one Question!
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <!-- Select any one Question....... -->
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

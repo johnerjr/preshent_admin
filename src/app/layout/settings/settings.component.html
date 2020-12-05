@@ -1,0 +1,68 @@
+<div class="app flex-row align-items-center marginTop">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h4><strong>Set New Password</strong></h4>
+                <form [formGroup]="forgotPassForm" novalidate (ngSubmit)="onSubmit()" role="form">
+                    <fieldset>
+
+                        <div class="row form-group">
+                            <div class="col col-md-12">
+                                <input type="password" formControlName="currentPassword" class="form-control placeholder-size"
+                                    placeholder="Current Password">
+                                <div *ngIf="submitted && forgotPassForm.controls['currentPassword'].errors" class="error">
+                                    <span class="text-danger"
+                                        *ngIf="submitted && forgotPassForm.controls['currentPassword'].errors.required">
+                                        *Current Password is required.</span>
+                                    <span class="text-danger"
+                                        *ngIf="submitted && forgotPassForm.controls['currentPassword'].errors.pattern">
+                                        <p>*Password must be at least 6 characters, and must be alphanumeric.</p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-12">
+                                <input type="password" formControlName="password" class="form-control placeholder-size"
+                                    placeholder="New Password">
+                                <div *ngIf="submitted && forgotPassForm.controls['password'].errors" class="error">
+                                    <span class="text-danger"
+                                        *ngIf="submitted && forgotPassForm.controls['password'].errors.required">
+                                        *New Password is required.</span>
+                                    <span class="text-danger"
+                                        *ngIf="submitted && forgotPassForm.controls['password'].errors.pattern">
+                                        <p>*Password must be at least 6 characters, and must be alphanumeric.</p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-12">
+                                <input type="password" formControlName="cpassword" class="form-control placeholder-size"
+                                    placeholder="Confirm Password">
+                                <div *ngIf="submitted && forgotPassForm.controls['cpassword'].errors" class="error">
+                                    <span class="text-danger"
+                                        *ngIf="submitted && forgotPassForm.controls['cpassword'].errors.required">
+                                        *Confirm password is required.</span>
+                                </div>
+                                <div *ngIf="submitted">
+                                    <span class="text-danger"
+                                        *ngIf="forgotPassForm.controls['password'].valid  && forgotPassForm.errors && submitted">
+                                        *New Password and confirm password mismatch.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-6">
+                                <button type="submit" data-size="l" type="submit" class="btn btn-primary">Reset
+                                    Password</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
